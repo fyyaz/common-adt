@@ -55,6 +55,7 @@ class BigInteger
     // more utility methods
     public:
         void zero_justify();
+        int compare_magnitude(const BigInteger &num);
 
      // boolean operators
     public:

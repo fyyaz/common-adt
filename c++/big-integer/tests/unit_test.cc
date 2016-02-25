@@ -26,8 +26,9 @@ using namespace std;
 int main()
 {
     //BigInteger num("124");
-    BigInteger num(123);
-    BigInteger num2(-1234);
+    BigInteger num(-1235LL);
+    BigInteger num2(1234);
     cout << (num < num2) << endl;
+    cout << num.compare_magnitude_less(num2) << endl;
     return 0;
 }

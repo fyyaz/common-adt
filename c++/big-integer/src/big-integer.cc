@@ -83,10 +83,6 @@ BigInteger::BigInteger(const std::string &num)
  */
 BigInteger::BigInteger(int num)
 {
-    this->length = (int)std::floor(std::log10(num)+1);
-    this->digit.resize(this->length);
-    this->digit[0] = '0';
-    //printf("%d\n", (int)std::ceil(std::log10(num)));
     if(num >= 0)
     {
         this->signbit = POSITIVE;
@@ -96,6 +92,9 @@ BigInteger::BigInteger(int num)
         this->signbit = NEGATIVE;
         num *=-1;
     }
+    this->length = (int)std::floor(std::log10(num)+1);
+    this->digit.resize(this->length);
+    this->digit[0] = '0';
     // we can get the least significant digit by modding num by 10
     // then we just divide by 10 to get the next least significant digit
     for(int i = 0;i < length && num != 0;i++){
@@ -109,10 +108,6 @@ BigInteger::BigInteger(int num)
  */
 BigInteger::BigInteger(long long num)
 {
-    this->length = (int)std::floor(std::log10(num)+1);
-    this->digit.resize(this->length);
-    this->digit[0] = '0';
-    //printf("%d\n", (int)std::ceil(std::log10(num)));
     if(num >= 0)
     {
         this->signbit = POSITIVE;
@@ -122,6 +117,9 @@ BigInteger::BigInteger(long long num)
         this->signbit = NEGATIVE;
         num *=-1;
     }
+    this->length = (int)std::floor(std::log10(num)+1);
+    this->digit.resize(this->length);
+    this->digit[0] = '0';
     // we can get the least significant digit by modding num by 10
     // then we just divide by 10 to get the next least significant digit
     for(int i = 0;i < length && num != 0;i++){
@@ -243,22 +241,30 @@ void BigInteger::zero_justify()
         this->signbit = POSITIVE;
 }
 
-bool BigInteger::operator <  (const BigInteger &num)const
+/* Compares the magnitude of two integers. So doesn't take into considerations
+ * if it's positivety or negativity. Equivalient to < operator but only with
+ * magnitude.
+ * Return: -1 if current number > num
+ *          0 if current number == num
+ *          1 if current number < num
+ */
+int BigInteger::compare_magnitude(const BigInteger &num)
 {
     int cur_len = this->length;
-    int cmp_len = num.length;
+    int cmp_len = this->length;
     if(cur_len < cmp_len)
     {
-        return true;
+        return 1;
     }
     else if(cmp_len < cur_len)
     {
-        return false;
+        return -1;
     }
     else
     {
-        int len = std::min(this->length, num.length);
-        for(int i = 0;i < len;i++)
+        // compare each digit individually now
+        int len = cur_len;
+        for(int i = len-1;i >= 0;i--)
         {
             if(this->digit[i] == num.digit[i])
             {
@@ -266,9 +272,45 @@ bool BigInteger::operator <  (const BigInteger &num)const
             }
             else
             {
-                return this->digit[i] < num.digit[i];
+                if(this->digit[i] < num.digit[i])
+                {
+                    return 1;
+                }
+                else
+                {
+                    return -1;
+                }
             }
         }
+        // only reaches this statement when they are the same number
+        return 0;
+    }
+}
+
+/* Compares two numbers based on magnitude and sign
+ * i.e. A < B
+ */
+bool BigInteger::operator <  (const BigInteger &num)const
+{
+    if(this->signbit == NEGATIVE && num.signbit == POSITIVE)
+    {
+        return true;
+    }
+    else if(this->signbit == POSITIVE && num.signbit == NEGATIVE)
+    {
+        return false;
+    }
+    else if(this->signbit == POSITIVE && num.signbit == POSITIVE)
+    {
+        return compare_magnitude(num);
+    }
+    else if(this->signbit == NEGATIVE && num.signbit == NEGATIVE)
+    {
+        return compare_magnitude(num) == -1;
+    }
+    else
+    {
+        return false;
     }
 }
 
