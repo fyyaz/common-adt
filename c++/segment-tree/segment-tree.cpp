@@ -16,8 +16,7 @@ template<class T> class segment_tree{
             N = _N;
          }
          segment_tree(T arr[],int _N){
-            N = _N;
-            for(int i = 0;i < N;i++)
+            N = _N; for(int i = 0;i < N;i++)
                 update(i+1,arr[i]);
          }
          segment_tree(vector<T> arr,int _N){
