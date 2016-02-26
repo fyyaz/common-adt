@@ -55,7 +55,7 @@ class BigInteger
     // more utility methods
     public:
         void zero_justify();
-        int compare_magnitude(const BigInteger &num);
+        int compare_magnitude(const BigInteger &num)const;
 
      // boolean operators
     public:
@@ -66,23 +66,24 @@ class BigInteger
         bool operator != (const BigInteger&num)const;
         bool operator == (const BigInteger&num)const;
 
-    // arithmetic operators
-    public:
-        BigInteger operator +  (const BigInteger &num);
-        BigInteger operator -  (const BigInteger &num);
-        BigInteger operator *  (const BigInteger &num);
-        BigInteger operator /  (const BigInteger &num);
-        BigInteger operator %  (const BigInteger &num);
-
     // assignment operators
     public:
         void operator =  (const BigInteger &num);
         void operator =  (int num);
         void operator =  (long long num);
-        void operator += (const BigInteger &num);
-        void operator -= (const BigInteger &num);
-        void operator *= (const BigInteger &num);
-        void operator /= (const BigInteger &num);
+        void operator += (BigInteger &num);
+        void operator -= (BigInteger &num);
+        void operator *= (BigInteger &num);
+        void operator /= (BigInteger &num);
+
+    // arithmetic operators
+    public:
+        BigInteger operator +  (BigInteger &num);
+        BigInteger operator -  (BigInteger &num);
+        BigInteger operator *  (BigInteger &num);
+        BigInteger operator /  (BigInteger &num);
+        BigInteger operator %  (BigInteger &num);
+
 
     // output/input operators
 };

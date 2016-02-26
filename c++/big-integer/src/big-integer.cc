@@ -98,7 +98,7 @@ BigInteger::BigInteger(int num)
     // we can get the least significant digit by modding num by 10
     // then we just divide by 10 to get the next least significant digit
     for(int i = 0;i < length && num != 0;i++){
-        digit[i] = (num%10)+'0';
+        this->digit[i] = (num%10)+'0';
         num/=10;
     }
 }
@@ -123,7 +123,7 @@ BigInteger::BigInteger(long long num)
     // we can get the least significant digit by modding num by 10
     // then we just divide by 10 to get the next least significant digit
     for(int i = 0;i < length && num != 0;i++){
-        digit[i] = (num%10)+'0';
+        this->digit[i] = (num%10)+'0';
         num/=10;
     }
 }
@@ -244,21 +244,21 @@ void BigInteger::zero_justify()
 /* Compares the magnitude of two integers. So doesn't take into considerations
  * if it's positivety or negativity. Equivalient to < operator but only with
  * magnitude.
- * Return: -1 if current number > num
+ * Return: -1 if current number < num
  *          0 if current number == num
- *          1 if current number < num
+ *          1 if current number > num
  */
-int BigInteger::compare_magnitude(const BigInteger &num)
+int BigInteger::compare_magnitude(const BigInteger &num) const
 {
     int cur_len = this->length;
     int cmp_len = this->length;
     if(cur_len < cmp_len)
     {
-        return 1;
+        return -1;
     }
     else if(cmp_len < cur_len)
     {
-        return -1;
+        return 1;
     }
     else
     {
@@ -274,11 +274,11 @@ int BigInteger::compare_magnitude(const BigInteger &num)
             {
                 if(this->digit[i] < num.digit[i])
                 {
-                    return 1;
+                    return -1;
                 }
                 else
                 {
-                    return -1;
+                    return 1;
                 }
             }
         }
@@ -302,53 +302,247 @@ bool BigInteger::operator <  (const BigInteger &num)const
     }
     else if(this->signbit == POSITIVE && num.signbit == POSITIVE)
     {
-        return compare_magnitude(num);
+        return compare_magnitude(num) < 0;
     }
     else if(this->signbit == NEGATIVE && num.signbit == NEGATIVE)
     {
-        return compare_magnitude(num) == -1;
+        // a negative number with a bigger magnitude is
+        // less than a negative with a smaller magnitude
+        return compare_magnitude(num) > 0;
     }
     else
     {
+        // i'm really not sure of a case where this should run
         return false;
     }
 }
 
+/* Compares two numbers based on magnitude and sign
+ * i.e. A > B
+ */
+bool BigInteger::operator > (const BigInteger &num)const
+{
+    return !(*this < num);
+}
 
-// /* This operator is used for simple addition
-//  * i.e. A = B+C
-//  */
-// BigInteger BigInteger::operator + (const BigInteger &num)
-// {
-//     // get a copy of the current number this operator was invoked on
-//     BigInteger ret(*this);
-//     ret += num;
-//     return ret;
-// }
+/* Compares two numbers based on magnitude and sign
+ * i.e. A >= B
+ */
+bool BigInteger::operator >= (const BigInteger &num)const
+{
+    return !(*this < num);
+}
 
-// // TODO
+/* Compares two numbers based on magnitude and sign
+ * i.e. A <= B
+ */
+bool BigInteger::operator <= (const BigInteger &num)const
+{
+    return !(num < *this);
+}
 
-// void BigInteger::operator += (const BigInteger &num){
-//     if(this->signbit == POSITIVE && num.signbit == POS)
-//         this->add(num)
-//     else if(this->signbit == NEG  && b.signbit == NEG)
-//         this->add(num);
-//     else if(this->signbit == POS && b.signbit == NEG){
-//         if(*this >= b)
-//             this->sub(b);
-//         else{
-//             bigint a(*this);
-//             *this = b;
-//             this->sub(a);
-//         }
-//     }
-//     else if(this->signbit == NEG && b.signbit == POS){
-//         if(*this >= b)
-//             this->sub(b);
-//         else{
-//             bigint a(*this);
-//             *this = b;
-//             this->sub(a);
-//         }
-//     }
-// }
+/* Compares two numbers based on magnitude and sign
+ * i.e. A != B
+ */
+bool BigInteger::operator != (const BigInteger &num)const
+{
+    return (*this < num) || (num < *this);
+}
+
+/* Compares two numbers based on magnitude and sign
+ * i.e. A == B
+ */
+bool BigInteger::operator == (const BigInteger &num)const
+{
+    return !(*this != num);
+}
+
+/* Assigns current number to another BigInteger
+ */
+void BigInteger::operator = (const BigInteger &num)
+{
+    this->digit = num.digit;
+    this->length = num.length;
+    this->signbit = num.signbit;
+}
+
+/* Assigns current number to another int
+ */
+void BigInteger::operator = (int num)
+{
+    if(num >= 0)
+    {
+        this->signbit = POSITIVE;
+    }
+    else
+    {
+        this->signbit = NEGATIVE;
+        num *=-1;
+    }
+    this->length = (int)std::floor(std::log10(num)+1);
+    this->digit.resize(this->length);
+    this->digit[0] = '0';
+    // we can get the least significant digit by modding num by 10
+    // then we just divide by 10 to get the next least significant digit
+    for(int i = 0;i < length && num != 0;i++){
+        this->digit[i] = (num%10)+'0';
+        num/=10;
+    }
+}
+
+/* Assigns current number to another long long
+ */
+void BigInteger::operator = (long long num)
+{
+    if(num >= 0)
+    {
+        this->signbit = POSITIVE;
+    }
+    else
+    {
+        this->signbit = NEGATIVE;
+        num *=-1;
+    }
+    this->length = (int)std::floor(std::log10(num)+1);
+    this->digit.resize(this->length);
+    this->digit[0] = '0';
+    // we can get the least significant digit by modding num by 10
+    // then we just divide by 10 to get the next least significant digit
+    for(int i = 0;i < length && num != 0;i++){
+        this->digit[i] = (num%10)+'0';
+        num/=10;
+    }
+}
+
+
+/* Adds the num to the current big int
+ */
+void BigInteger::operator += (BigInteger &num)
+{
+    if( (this->signbit == POSITIVE && num.signbit == POSITIVE)
+    || (this->signbit == NEGATIVE  && num.signbit == NEGATIVE) )
+    {
+        this->add(num);
+    }
+    else if(this->signbit == POSITIVE && num.signbit == NEGATIVE)
+    {
+        // checks if the current magnitude is greater or equal to the
+        // magnitude of num
+        if(this->compare_magnitude(num) >= 0)
+        {
+            this->sub(num);
+        }
+        else
+        {
+            // swap the two variables
+            // so the one with a bigger magnitude is subtracted from
+            BigInteger temp(*this);
+            *this = num;
+            this->sub(temp);
+        }
+    }
+    else if(this->signbit == NEGATIVE && num.signbit == POSITIVE)
+    {
+        // checks if the current magnitude is greater or equal to the
+        // magnitude of num
+        if(this->compare_magnitude(num) >= 0)
+        {
+            this->sub(num);
+        }
+        else
+        {
+            // swap the two variables
+            // so the one with a bigger magnitude is subtracted from
+            BigInteger temp(*this);
+            *this = num;
+            this->sub(temp);
+        }
+    }
+}
+
+/* Subtracts the num from the current big int
+ */
+void BigInteger::operator -= (BigInteger &num)
+{
+    if( (this->signbit == POSITIVE && num.signbit == POSITIVE)
+    ||  (this->signbit == NEGATIVE && num.signbit == NEGATIVE) )
+    {
+         // checks if the current magnitude is greater or equal to the
+        // magnitude of num
+        if(this->compare_magnitude(num) >= 0)
+        {
+            this->sub(num);
+        }
+        else{
+            // swap the two variables
+            // so the one with a bigger magnitude is subtracted from
+            BigInteger temp(*this);
+            *this = num;
+            this->sub(temp);
+            if(this->signbit == POSITIVE && num.signbit == POSITIVE)
+            {
+                this->signbit = NEGATIVE;
+            }
+            else
+            {
+                this->signbit = NEGATIVE;
+            }
+        }
+    }
+    else if(this->signbit == POSITIVE && num.signbit == NEGATIVE)
+    {
+            this->add(num);
+    }
+    else if(this->signbit == NEGATIVE && num.signbit == POSITIVE)
+    {
+            // checks if the current magnitude is greater or equal to the
+            // magnitude of num
+            if(this->compare_magnitude(num) >= 0)
+            {
+                this->sub(num);
+            }
+            else
+            {
+                // swap the two variables
+                // so the one with a bigger magnitude is subtracted from
+                BigInteger temp(*this);
+                *this = num;
+                this->sub(temp);
+            }
+    }
+}
+
+/* Multiplies this by the given number
+ */
+void BigInteger::operator *= (BigInteger &num)
+{
+        // TODO
+}
+
+/* Divides this by the given number
+ */
+void BigInteger::operator /= (BigInteger &num)
+{
+        // TODO
+}
+
+
+/* Adds num to the current biginteger
+ * i.e. C = A+B
+ */
+BigInteger BigInteger::operator + (BigInteger &num)
+{
+    BigInteger ret(*this);
+    ret += num;
+    return num;
+}
+
+/* Adds num to the current biginteger
+ * i.e. C = A-B
+ */
+BigInteger BigInteger::operator - (BigInteger &num)
+{
+    BigInteger ret(*this);
+    ret -= num;
+    return num;
+}
