@@ -25,6 +25,7 @@
 #include <cmath>
 #include <cstdio>
 #include <cstring>
+#include <iostream>
 #include <vector>
 #include <string>
 #include <algorithm>
@@ -86,6 +87,9 @@ class BigInteger
 
 
     // output/input operators
+    public:
+        friend std::ostream& operator << (std::ostream &out, BigInteger num);
+        friend std::istream& operator >> (std::istream &in, BigInteger num);
 };
 
 #endif

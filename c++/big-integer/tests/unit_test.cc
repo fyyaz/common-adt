@@ -26,16 +26,11 @@ using namespace std;
 int main()
 {
     //BigInteger num("124");
-    BigInteger num(1235);
-    BigInteger num2(1234);
-    cout << (num < num2) << endl;
-    cout << (num > num2) << endl;
-    cout << (num >= num2) << endl;
-    cout << (num <= num2) << endl;
-    cout << (num != num2) << endl;
-    cout << (num == num2) << endl;
-    num = 12524;
-    cout << (num < num2) << endl;
-    num += num2;
+    BigInteger a = 1;
+    BigInteger b = 24234234;
+    a += b;
+    cout << a << endl;
+    BigInteger c = (a+b);
+    cout << c << endl;
     return 0;
 }

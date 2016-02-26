@@ -138,8 +138,9 @@ void BigInteger::add(BigInteger &num)
     // we will add leading zeroes to make looping less cumbersome
     this->length = final_length;
     this->digit.resize(final_length);
+    num.length = final_length;
     num.digit.resize(final_length);
-    num.digit.resize(final_length);
+    //num.digit.resize(final_length);
     for(int i = 0,sum = 0;i < final_length;i++)
     {
         sum = carry;
@@ -184,7 +185,7 @@ void BigInteger::sub(BigInteger &num)
     // we will add leading zeroes to make looping less cumbersome
     this->length = final_length;
     this->digit.resize(final_length);
-    num.digit.resize(final_length);
+    num.length = final_length;
     num.digit.resize(final_length);
     for(int i = 0;i < final_length;i++)
     {
@@ -227,14 +228,15 @@ void BigInteger::sub(BigInteger &num)
  */
 void BigInteger::zero_justify()
 {
-    int last_index = this->length;
+    int last_index = this->length-1;
     // continally remove invalid elements
     while(!isdigit(this->digit[last_index]))
     {
         this->digit.pop_back();
         this->length--;
-        last_index = this->length;
+        last_index--;
     }
+
     // Added this statement to avoid -0
     // -0 usually occurs when BigInteger::sub(BigInteger &num) is called
     if(this->digit[last_index] == 0 && this->digit[0] == 0)
@@ -545,4 +547,17 @@ BigInteger BigInteger::operator - (BigInteger &num)
     BigInteger ret(*this);
     ret -= num;
     return num;
+}
+
+std::ostream& operator << (std::ostream &out, BigInteger num)
+{
+    if(num.signbit == NEGATIVE)
+    {
+        out << "-";
+    }
+    for(int i = num.length-1;i >= 0;i--)
+    {
+        out << num.digit[i];
+    }
+    return out;
 }
