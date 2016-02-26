@@ -48,18 +48,18 @@ class BigInteger
         BigInteger(int num);
         BigInteger(long long num);
 
-    // utility methods
     private:
+        // utility methods
         void add(BigInteger &num);
         void sub(BigInteger &num);
 
-    // more utility methods
+
     public:
+        // more utility methods
         void zero_justify();
         int compare_magnitude(const BigInteger &num)const;
 
-     // boolean operators
-    public:
+         // boolean operators
         bool operator < (const BigInteger&num)const;
         bool operator > (const BigInteger&num)const;
         bool operator >= (const BigInteger&num)const;
@@ -67,8 +67,7 @@ class BigInteger
         bool operator != (const BigInteger&num)const;
         bool operator == (const BigInteger&num)const;
 
-    // assignment operators
-    public:
+        // assignment operators
         BigInteger operator =  (const BigInteger &num);
         BigInteger operator =  (int num);
         BigInteger operator =  (long long num);
@@ -77,17 +76,14 @@ class BigInteger
         BigInteger operator *= (BigInteger &num);
         BigInteger operator /= (BigInteger &num);
 
-    // arithmetic operators
-    public:
+        // arithmetic operators
         BigInteger operator +  (BigInteger &num);
         BigInteger operator -  (BigInteger &num);
         BigInteger operator *  (BigInteger &num);
         BigInteger operator /  (BigInteger &num);
         BigInteger operator %  (BigInteger &num);
 
-
-    // output/input operators
-    public:
+        // output/input operators
         friend std::ostream& operator << (std::ostream &out, BigInteger num);
         friend std::istream& operator >> (std::istream &in, BigInteger num);
 };
