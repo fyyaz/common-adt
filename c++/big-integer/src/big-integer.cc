@@ -361,16 +361,17 @@ bool BigInteger::operator == (const BigInteger &num)const
 
 /* Assigns current number to another BigInteger
  */
-void BigInteger::operator = (const BigInteger &num)
+BigInteger BigInteger::operator = (const BigInteger &num)
 {
     this->digit = num.digit;
     this->length = num.length;
     this->signbit = num.signbit;
+    return *this;
 }
 
 /* Assigns current number to another int
  */
-void BigInteger::operator = (int num)
+BigInteger BigInteger::operator = (int num)
 {
     if(num >= 0)
     {
@@ -390,11 +391,12 @@ void BigInteger::operator = (int num)
         this->digit[i] = (num%10)+'0';
         num/=10;
     }
+    return *this;
 }
 
 /* Assigns current number to another long long
  */
-void BigInteger::operator = (long long num)
+BigInteger BigInteger::operator = (long long num)
 {
     if(num >= 0)
     {
@@ -414,6 +416,7 @@ void BigInteger::operator = (long long num)
         this->digit[i] = (num%10)+'0';
         num/=10;
     }
+    return *this;
 }
 
 
