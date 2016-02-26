@@ -28,9 +28,10 @@ int main()
     //BigInteger num("124");
     BigInteger a = 1;
     BigInteger b = 24234234;
-    a += b;
-    cout << a << endl;
-    BigInteger c = (a+b);
+    BigInteger c = a+b;
+    //a += b;
+    c = (a+=b)+=a;
     cout << c << endl;
+
     return 0;
 }

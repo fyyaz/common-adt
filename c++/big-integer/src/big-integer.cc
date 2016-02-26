@@ -422,7 +422,7 @@ BigInteger BigInteger::operator = (long long num)
 
 /* Adds the num to the current big int
  */
-void BigInteger::operator += (BigInteger &num)
+BigInteger BigInteger::operator += (BigInteger num)
 {
     if( (this->signbit == POSITIVE && num.signbit == POSITIVE)
     || (this->signbit == NEGATIVE  && num.signbit == NEGATIVE) )
@@ -463,11 +463,12 @@ void BigInteger::operator += (BigInteger &num)
             this->sub(temp);
         }
     }
+    return *this;
 }
 
 /* Subtracts the num from the current big int
  */
-void BigInteger::operator -= (BigInteger &num)
+BigInteger BigInteger::operator -= (BigInteger &num)
 {
     if( (this->signbit == POSITIVE && num.signbit == POSITIVE)
     ||  (this->signbit == NEGATIVE && num.signbit == NEGATIVE) )
@@ -515,20 +516,23 @@ void BigInteger::operator -= (BigInteger &num)
                 this->sub(temp);
             }
     }
+    return *this;
 }
 
 /* Multiplies this by the given number
  */
-void BigInteger::operator *= (BigInteger &num)
+BigInteger BigInteger::operator *= (BigInteger &num)
 {
         // TODO
+    return *this;
 }
 
 /* Divides this by the given number
  */
-void BigInteger::operator /= (BigInteger &num)
+BigInteger BigInteger::operator /= (BigInteger &num)
 {
         // TODO
+    return *this;
 }
 
 

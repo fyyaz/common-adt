@@ -72,10 +72,10 @@ class BigInteger
         BigInteger operator =  (const BigInteger &num);
         BigInteger operator =  (int num);
         BigInteger operator =  (long long num);
-        void operator += (BigInteger &num);
-        void operator -= (BigInteger &num);
-        void operator *= (BigInteger &num);
-        void operator /= (BigInteger &num);
+        BigInteger operator += (BigInteger num);
+        BigInteger operator -= (BigInteger &num);
+        BigInteger operator *= (BigInteger &num);
+        BigInteger operator /= (BigInteger &num);
 
     // arithmetic operators
     public:
