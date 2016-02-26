@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "../inc/big-integer.h"
+#include "../inc/big_integer.h"
 
 /* Default Constructor
  * Initializes big integer to 0

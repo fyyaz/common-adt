@@ -19,7 +19,7 @@
 // SOFTWARE.
 
 #include <bits/stdc++.h>
-#include "../src/big-integer.cc"
+#include "../src/big_integer.cc"
 using namespace std;
 
 
