@@ -32,6 +32,15 @@ int main()
     //a += b;
     c = (a+=b)+=a;
     cout << c << endl;
+    cout << c++ << endl;
+    cout << c << endl;
+    cout << ++c <<endl;
+
+    BigInteger d;
+
+    cin>>d;
+    cout<<d;
+    //cout<<a+b;
 
     return 0;
 }

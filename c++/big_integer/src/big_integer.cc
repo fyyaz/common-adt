@@ -39,9 +39,12 @@ BigInteger::~BigInteger()
     this->digit.resize(this->length);
 }
 
+
 /* Constructor for string values
  * Initializes big integer to num
  */
+
+
 BigInteger::BigInteger(const std::string &num)
 {
     if((int)num.size() == 0)
@@ -63,7 +66,7 @@ BigInteger::BigInteger(const std::string &num)
             // -1000
             //     ^- least significant
             for(int i = this->length, j = 0;i >= 1;i--)
-                this->digit[j++] = num[i];
+                this->digit.push_back(num[i]);
         }
         else{
             this->signbit = POSITIVE;
@@ -73,11 +76,10 @@ BigInteger::BigInteger(const std::string &num)
             // 1000
             //    ^- least significant
             for(int i = this->length, j = 0;i >= 0;i--)
-                this->digit[j++] = num[i];
+                this->digit.push_back(num[i]);
         }
     }
 }
-
 /* Constructor for int values
  * Initializes big integer to num
  */
@@ -535,6 +537,38 @@ BigInteger BigInteger::operator /= (BigInteger &num)
     return *this;
 }
 
+//prefix ++ and --
+BigInteger& BigInteger::operator++ ()
+{
+    BigInteger ONE(1);
+    this->add(ONE);
+    return *this; 
+}
+BigInteger& BigInteger::operator-- ()
+{
+    BigInteger ONE(1);
+    this->sub(ONE);
+    return *this;
+}
+
+//postfix ++ and -- 
+BigInteger BigInteger::operator++ (int)
+{
+    //temp var
+    BigInteger ret = *this;
+    ++(*this);
+
+    return ret;
+}
+BigInteger BigInteger::operator-- (int)
+{
+    
+    //temp var
+    BigInteger ret = *this;
+    --(*this);
+
+    return ret;   
+}
 
 /* Adds num to the current biginteger
  * i.e. C = A+B
@@ -543,7 +577,7 @@ BigInteger BigInteger::operator + (BigInteger &num)
 {
     BigInteger ret(*this);
     ret += num;
-    return num;
+    return ret;
 }
 
 /* Adds num to the current biginteger
@@ -553,10 +587,20 @@ BigInteger BigInteger::operator - (BigInteger &num)
 {
     BigInteger ret(*this);
     ret -= num;
-    return num;
+    return ret;
 }
 
-std::ostream& operator << (std::ostream &out, BigInteger num)
+std::istream& operator >> (std::istream &in, BigInteger& num)
+{
+    std::string input;
+    in>>input;
+
+    num = BigInteger(input);
+
+    return in;
+}
+
+std::ostream& operator << (std::ostream &out, const BigInteger& num)
 {
     if(num.signbit == NEGATIVE)
     {

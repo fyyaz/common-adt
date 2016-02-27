@@ -39,7 +39,6 @@ class BigInteger
         std::vector<char>digit;
         int signbit;
         int length;
-
     // constructors and destructor
     public:
         BigInteger();
@@ -76,6 +75,12 @@ class BigInteger
         BigInteger operator *= (BigInteger &num);
         BigInteger operator /= (BigInteger &num);
 
+        // increment, decrement operators
+        BigInteger operator++(int);
+        BigInteger operator--(int);
+        BigInteger& operator++();
+        BigInteger& operator--();
+
         // arithmetic operators
         BigInteger operator +  (BigInteger &num);
         BigInteger operator -  (BigInteger &num);
@@ -84,8 +89,8 @@ class BigInteger
         BigInteger operator %  (BigInteger &num);
 
         // output/input operators
-        friend std::ostream& operator << (std::ostream &out, BigInteger num);
-        friend std::istream& operator >> (std::istream &in, BigInteger num);
+        friend std::ostream& operator << (std::ostream &out, const BigInteger& num);
+        friend std::istream& operator >> (std::istream &in, BigInteger& num);
 };
 
 #endif
